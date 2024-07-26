@@ -1,17 +1,30 @@
-from ViewDelegate import GameDelegate
+from GeneticAlghoritm import GeneticAlghoritm
 from Entity import Entity
 from EntityType import EntityType
+import pygame
+import sys
 
 if __name__ == '__main__':
+    game = GeneticAlghoritm(200, 100)
 
-    entities = [
-        Entity(5, 5, EntityType.HYBRID),
-        Entity(11, 56, EntityType.PLANT),
-        Entity(81, 3, EntityType.PREDATOR)
-    ]
+    i = 0
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
-    GameDelegate.init(100, 100)
-    GameDelegate.draw_board()
-    GameDelegate.update_entities(entities)
+        if 3 * i < 100:
+            entities = [
+                Entity(i, i, EntityType.HYBRID),
+                Entity(2 * i, 2 * i, EntityType.PLANT),
+                Entity(3 * i, 3 * i, EntityType.PREDATOR)
+            ]
 
-    GameDelegate.mainloop()
+            game.set_entities(entities)
+            game.update_entities()
+
+            pygame.display.flip()
+            pygame.time.delay(200)  # 5 fps
+
+            i += 1
