@@ -2,9 +2,9 @@ from enum import Enum
 
 
 class EntityType(Enum):
-    Predator = 1
-    Hybrid = 2
-    Plant = 3
+    PREDATOR = 1
+    HYBRID = 2
+    PLANT = 3
 
     def get_color(self):
         color_map = {
@@ -12,4 +12,4 @@ class EntityType(Enum):
             EntityType.HYBRID: "blue",
             EntityType.PLANT: "green"
         }
-        return color_map.get(self, "yeelow")        # По умолчанию желтый цвет
+        return color_map.get(self, "yellow")        # По умолчанию желтый цвет
