@@ -8,8 +8,8 @@ class EntityType(Enum):
 
     def get_color(self):
         color_map = {
-            EntityType.PREDATOR: "red",
-            EntityType.HYBRID: "blue",
-            EntityType.PLANT: "green"
+            EntityType.PREDATOR: (255, 0, 0),
+            EntityType.HYBRID: (0, 255, 0),
+            EntityType.PLANT: (0, 0, 255)
         }
-        return color_map.get(self, "yellow")        # По умолчанию желтый цвет
+        return color_map[self]
