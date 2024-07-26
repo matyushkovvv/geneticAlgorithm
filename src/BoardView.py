@@ -1,5 +1,5 @@
-import tkinter as tk
 import pyautogui
+import pygame
 
 
 class Board:
@@ -10,45 +10,41 @@ class Board:
         self.rows = rows
 
         self.__cell_size = min(self.screen_width,
-                               self.screen_height) // min(cols, rows)
+                               self.screen_height) // min(self.cols, self.rows)
 
-        self.root = tk.Tk()
-        self.root.title("Genetic Algorithm")
+        self.width = self.__cell_size * self.cols
+        self.height = self.__cell_size * self.rows
 
-        self.canvas = tk.Canvas(
-            self.root,
-            width=self.cols * self.__cell_size,
-            height=self.rows * self.__cell_size
-        )
+        self.screen = pygame.display.set_mode((self.width, self.height))
+        pygame.display.set_caption("Genetic Algorithm")
 
-        self.canvas.pack()
         self.draw_board()
 
-        self.update_board()
+    def draw_cell(self, x, y, fill, outline="black"):
+        pygame.draw.rect(self.screen, fill,
+                         (x, y, self.__cell_size, self.__cell_size))
+        pygame.draw.rect(self.screen, outline,
+                         (x, y, self.__cell_size, self.__cell_size), 1)
 
     def draw_board(self):
+        self.screen.fill((255, 255, 255))
         for row in range(self.rows):
             for col in range(self.cols):
-                x1 = col * self.__cell_size
-                y1 = row * self.__cell_size
-                x2 = x1 + self.__cell_size
-                y2 = y1 + self.__cell_size
-                self.canvas.create_rectangle(x1, y1, x2, y2, outline="black")
+                x = col * self.__cell_size
+                y = row * self.__cell_size
+                self.draw_cell(x, y, fill="white")
 
-    def draw_entities(self, entities_list):
+    def draw_entity(self, col, row, fill):
+        x = col * self.__cell_size
+        y = row * self.__cell_size
+        self.draw_cell(x, y, fill=fill)
+
+    def clear_board(self):
+        self.screen.fill((255, 255, 255))
+        self.draw_board()
+
+    def update_entities(self, entities_list):
+        self.clear_board()
+
         for entity in entities_list:
-            x1 = entity.col * self.__cell_size
-            y1 = entity.row * self.__cell_size
-            x2 = x1 + self.__cell_size
-            y2 = y1 + self.__cell_size
-            self.canvas.create_rectangle(x1, y1, x2, y2, outline="black")
-
-    def update_board(self):
-        self.canvas.delete("entity")
-
-        self.draw_entities()
-
-        self.root.after(200, self.update_board)     # 5 fps
-
-    def mainloop(self):
-        self.root.mainloop()
+            self.draw_entity(entity.x, entity.y, entity.type.get_color())
